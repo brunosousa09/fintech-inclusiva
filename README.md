@@ -124,4 +124,4 @@ A aplicação frontend estará disponível em `http://localhost:5173` e o backen
 Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
 
 ---
-Feito por **[Bruno Sousa]** - [[Seu LinkedIn](https://www.linkedin.com/in/brunosousa09)]() | [[Seu GitHub](https://github.com/brunosousa09)]()
+Feito por **[Bruno Sousa]** - [[LinkedIn](https://www.linkedin.com/in/brunosousa09)]() | [[GitHub](https://github.com/brunosousa09)]()
