@@ -1,0 +1,12 @@
+# Dependências
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Arquivos de ambiente com senhas e chaves
+.env
+client/.env
+server/.env
+
+# Logs
+npm-debug.log*
