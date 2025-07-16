@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 const EyeIcon = ({ className }) => (
@@ -27,14 +26,10 @@ const GoogleIcon = () => (
 
 export default function AuthCard() {
     const [isFlipped, setIsFlipped] = useState(false);
-    const navigate = useNavigate();
-    const { login } = useContext(AuthContext); 
-
-
-    const [loginEmail, setLoginEmail] = useState('');
+    const { login, register } = useContext(AuthContext); 
+    const [loginUsername, setLoginUsername] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
     const [showLoginPassword, setShowLoginPassword] = useState(false);
-
 
     const [registerName, setRegisterName] = useState('');
     const [registerEmail, setRegisterEmail] = useState('');
@@ -49,26 +44,23 @@ export default function AuthCard() {
     const handleLoginSubmit = async (e) => {
         e.preventDefault();
         try {
-            await login(loginEmail, loginPassword);
-            navigate('/dashboard');
+            await login(loginUsername, loginPassword);
         } catch (error) {
             console.error("Erro no login:", error);
-            alert("Falha no login. Verifique suas credenciais.");
+            alert("Falha no login. Verifique seu nome de usuário e senha.");
         }
     };
 
-    // A função de registro será reativada quando o backend estiver pronto
     const handleRegisterSubmit = async (e) => {
         e.preventDefault();
-        alert('Funcionalidade de registro em desenvolvimento!');
-        // try {
-        //     await register(registerName, registerEmail, registerPassword);
-        //     alert('Cadastro realizado com sucesso! Vire o cartão para fazer login.');
-        //     setIsFlipped(false);
-        // } catch (error) {
-        //     console.error("Erro no cadastro:", error);
-        //     alert("Falha no cadastro. O e-mail já pode estar em uso.");
-        // }
+        try {
+            await register(registerName, registerEmail, registerPassword);
+            alert('Cadastro realizado com sucesso! Vire o cartão para fazer login.');
+            setIsFlipped(false);
+        } catch (error) {
+            console.error("Erro no cadastro:", error);
+            alert("Falha no cadastro. O e-mail já pode estar em uso.");
+        }
     };
 
     const cardContainerClass = "absolute w-full h-full bg-slate-800/60 backdrop-blur-md rounded-xl p-8 shadow-2xl [backface-visibility:hidden] flex flex-col";
@@ -76,15 +68,22 @@ export default function AuthCard() {
     const linkClass = "font-semibold hover:underline transition-colors";
     
     return (
-        <div className="w-[340px] h-[520px] [perspective:1200px]"> 
+        <div className="w-[340px] h-[520px] [perspective:1200px]">
             <div
                 className={`relative w-full h-full text-center transition-transform duration-700 ease-in-out [transform-style:preserve-3d] ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`}
             >
-                {/* ===== (LOGIN) ===== */}
+                
                 <div className={cardContainerClass}>
                     <h2 className="text-3xl font-bold text-white mb-6">Login</h2>
                     <form onSubmit={handleLoginSubmit} className="flex flex-col gap-5 flex-grow">
-                        <input value={loginEmail} onChange={e => setLoginEmail(e.target.value)} type="email" placeholder="Email" className={inputClass} required />
+                        <input
+                            value={loginUsername}
+                            onChange={e => setLoginUsername(e.target.value)}
+                            type="text"
+                            placeholder="Nome de Usuário"
+                            className={inputClass}
+                            required
+                        />
                         <div className="relative w-full">
                             <input value={loginPassword} onChange={e => setLoginPassword(e.target.value)} type={showLoginPassword ? 'text' : 'password'} placeholder="Senha" className={inputClass} required />
                             <button type="button" onClick={() => setShowLoginPassword(!showLoginPassword)} className="absolute top-1/2 right-2 -translate-y-1/2 text-slate-400 hover:text-white">
@@ -96,13 +95,13 @@ export default function AuthCard() {
                         </button>
                     </form>
                     
-
                     <div className="flex items-center gap-4 my-4">
                         <hr className="w-full border-slate-600"/>
                         <span className="text-slate-400 text-sm">OU</span>
                         <hr className="w-full border-slate-600"/>
                     </div>
-                    <a href="http://localhost:3001/api/auth/google" className="w-full p-3 flex items-center justify-center gap-3 bg-slate-700 rounded-lg text-white font-semibold hover:bg-slate-600 transition-colors">
+
+                    <a href="http://localhost:8000/api/auth/google" className="w-full p-3 flex items-center justify-center gap-3 bg-slate-700 rounded-lg text-white font-semibold hover:bg-slate-600 transition-colors">
                         <GoogleIcon />
                         Entrar com o Google
                     </a>
@@ -119,7 +118,7 @@ export default function AuthCard() {
                 <div className={`${cardContainerClass} [transform:rotateY(180deg)]`}>
                     <h2 className="text-3xl font-bold text-white mb-6">Cadastro</h2>
                     <form onSubmit={handleRegisterSubmit} className="flex flex-col gap-5 flex-grow">
-                        <input value={registerName} onChange={e => setRegisterName(e.target.value)} type="text" placeholder="Nome" className={inputClass} required />
+                        <input value={registerName} onChange={e => setRegisterName(e.target.value)} type="text" placeholder="Nome Completo" className={inputClass} required />
                         <input value={registerEmail} onChange={e => setRegisterEmail(e.target.value)} type="email" placeholder="Email" className={inputClass} required />
                         <div className="relative w-full">
                             <input value={registerPassword} onChange={e => setRegisterPassword(e.target.value)} type={showRegisterPassword ? 'text' : 'password'} placeholder="Senha" className={inputClass} required />
@@ -134,15 +133,8 @@ export default function AuthCard() {
 
                     <div className="flex items-center gap-4 my-2">
                         <hr className="w-full border-slate-600"/>
-                        <span className="text-slate-400 text-sm">OU</span>
-                        <hr className="w-full border-slate-600"/>
                     </div>
                     
-                    <a href="http://localhost:3001/api/auth/google" className="w-full p-3 flex items-center justify-center gap-3 bg-slate-700 rounded-lg text-white font-semibold hover:bg-slate-600 transition-colors">
-                        <GoogleIcon />
-                        Cadastrar com o Google
-                    </a>
-
                     <p className="text-slate-400 text-sm mt-6">
                         Já tem uma conta?{' '}
                         <a href="#" onClick={handleFlip} className={`text-pink-400 ${linkClass}`}>

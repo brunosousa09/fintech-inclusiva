@@ -23,36 +23,29 @@ O **FinanTech Inclusiva** nasce com a missão de atacar esse problema, oferecend
 O projeto está sendo construído em fases, evoluindo de um MVP robusto para uma plataforma completa.
 
 ### 🌟 **Funcionalidades Essenciais (MVP)**
--   [x] **👤 Gestão de Usuário Completa:**
-    -   Cadastro seguro com hash de senha (`bcrypt`).
-    -   Login com e-mail e senha usando tokens (`JWT`).
-    -   Login social com contas Google (OAuth 2.0).
--   [ ] **🪙 CRUD de Transações:**
-    -   Adicionar, listar, editar e deletar receitas e despesas.
--   [ ] **📊 Dashboard Simples:**
+-   [x] **👤 Gestão de Usuário Completa (Backend):**
+    -   Criação de usuário segura.
+    -   Login com usuário e senha usando tokens (`JWT`).
+    -   Estrutura para login social com Google (OAuth 2.0).
+-   [x] **🪙 CRUD de Transações (Backend):**
+    -   API para adicionar, listar, editar e deletar receitas e despesas.
+-   [ ] **📊 Dashboard (Frontend):**
+    -   Conexão com a API para listar transações.
     -   Exibição do saldo atual.
-    -   Lista das últimas transações.
 
 ### 💎 **Funcionalidades Intermediárias**
--   [ ] **🎨 Categorização Personalizada:**
-    -   Criar, editar e deletar categorias para despesas.
--   [ ] **📈 Dashboard Avançado com Gráficos:**
-    -   Visualização de despesas por categoria (gráfico de pizza).
-    -   Comparativo de receitas vs. despesas mensais (gráfico de barras).
--   [ ] **🔍 Filtros e Relatórios:**
-    -   Filtrar transações por data, tipo e categoria.
+-   [ ] **🎨 Categorização Personalizada.**
+-   [ ] **📈 Dashboard Avançado com Gráficos.**
+-   [ ] **🔍 Filtros e Relatórios.**
 
 ### 🚀 **Funcionalidades Avançadas**
--   [ ] **🎯 Metas Financeiras:**
-    -   Definir objetivos de economia e acompanhar o progresso.
--   [ ] **⭐ Score de Crédito Alternativo:**
-    -   Algoritmo para gerar um score com base na saúde financeira do usuário.
--   [ ] **🔑 Recuperação de Senha Segura:**
-    -   Implementação de fluxo de "esqueci minha senha" via e-mail.
+-   [ ] **🎯 Metas Financeiras.**
+-   [ ] **⭐ Score de Crédito Alternativo.**
+-   [ ] **🔑 Recuperação de Senha Segura.**
 
 ## 🛠️ Tecnologias Utilizadas
 
-Este projeto utiliza uma stack JavaScript moderna, robusta e escalável.
+Este projeto utiliza uma arquitetura moderna com um frontend desacoplado em React e um backend robusto em Python/Django.
 
 #### **Frontend**
 | Tecnologia      | Descrição                                                              |
@@ -65,15 +58,15 @@ Este projeto utiliza uma stack JavaScript moderna, robusta e escalável.
 | **`React Context`** | Para gerenciamento de estado global (autenticação).                    |
 
 #### **Backend**
-| Tecnologia         | Descrição                                                                      |
-| :----------------- | :----------------------------------------------------------------------------- |
-| **`Node.js`** | Ambiente de execução JavaScript no lado do servidor.                           |
-| **`Express.js`** | Framework minimalista para a construção da API REST.                           |
-| **`PostgreSQL`** | Banco de dados relacional robusto e confiável.                                 |
-| **`Prisma`** | ORM de próxima geração para uma interação segura e intuitiva com o banco de dados. |
-| **`JWT`** | Implementação de tokens para proteger as rotas da API.                         |
-| **`Passport.js`**| Middleware de autenticação para o login social com Google.                     |
-| **`Bcrypt.js`**| Biblioteca para realizar o hash seguro de senhas.                              |
+| Tecnologia                      | Descrição                                                              |
+| :------------------------------ | :--------------------------------------------------------------------- |
+| **`Python`** | Linguagem principal para a lógica do servidor.                          |
+| **`Django`** | Framework web robusto para um desenvolvimento rápido e seguro.           |
+| **`Django REST Framework`**| Toolkit poderoso para a construção de APIs REST.                         |
+| **`PostgreSQL`** | Banco de dados relacional robusto e confiável.                         |
+| **`Simple JWT`** | Para implementação de autenticação com JSON Web Tokens.                  |
+| **`django-cors-headers`**| Para gerenciar permissões de acesso do frontend à API (CORS).          |
+| **`psycopg2`**| Driver para conectar o Django ao banco de dados PostgreSQL.             |
 
 ## ⚙️ Como Executar o Projeto Localmente
 
@@ -85,28 +78,40 @@ Siga os passos abaixo para configurar e rodar a aplicação no seu ambiente.
     cd fintech-inclusiva
     ```
 
-2.  **Configure o Backend:**
+2.  **Configure o Backend (Django):**
     ```bash
     # Navegue para a pasta do servidor
     cd server
 
+    # Crie e ative um ambiente virtual
+    python -m venv venv
+    .\venv\Scripts\activate
+
+    # Crie o arquivo requirements.txt (se ainda não existir)
+    pip freeze > requirements.txt
+    
     # Instale as dependências
-    npm install
+    pip install -r requirements.txt
 
     # Crie o arquivo .env e adicione suas variáveis de ambiente
-    # DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE"
-    # JWT_SECRET="SUA_CHAVE_SECRETA"
-    # GOOGLE_CLIENT_ID="SEU_CLIENT_ID_DO_GOOGLE"
-    # GOOGLE_CLIENT_SECRET="SEU_CLIENT_SECRET_DO_GOOGLE"
+    # SECRET_KEY="SUA_CHAVE_SECRETA_LONGA_E_ALEATORIA"
+    # DB_NAME=FinanTech-Inclusiva
+    # DB_USER=postgres
+    # DB_PASSWORD=sua-senha-do-postgres
+    # DB_HOST=localhost
+    # DB_PORT=5432
 
-    # Rode as migrações do Prisma para criar as tabelas no banco
-    npx prisma migrate dev
+    # Rode as migrações para criar as tabelas no banco
+    python manage.py migrate
+
+    # Crie um superusuário para poder logar
+    python manage.py createsuperuser
 
     # Inicie o servidor do backend
-    npm start
+    python manage.py runserver
     ```
 
-3.  **Configure o Frontend:**
+3.  **Configure o Frontend (React):**
     ```bash
     # Em um novo terminal, navegue para a pasta do cliente
     cd client
@@ -117,11 +122,11 @@ Siga os passos abaixo para configurar e rodar a aplicação no seu ambiente.
     # Inicie o cliente React
     npm run dev
     ```
-A aplicação frontend estará disponível em `http://localhost:5173` e o backend em `http://localhost:3001`.
+A aplicação frontend estará disponível em `http://localhost:5173` e o backend em `http://localhost:8000`.
 
 ##  licença
 
-Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
+Este projeto está sob a licença MIT.
 
 ---
-Feito por **[Bruno Sousa]** - [[LinkedIn](https://www.linkedin.com/in/brunosousa09)]() | [[GitHub](https://github.com/brunosousa09)]()
+Feito por **Bruno Sousa** - [LinkedIn](https://www.linkedin.com/in/brunosousa09) | [GitHub](https://github.com/brunosousa09)

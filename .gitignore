@@ -1,0 +1,24 @@
+# Arquivos de Ambiente e Segredos (O MAIS IMPORTANTE)
+.env
+*/.env
+.env.*
+!/.env.example
+
+# Dependências e Caches do Node.js (Frontend)
+**/node_modules
+npm-debug.log*
+yarn-error.log
+pnpm-debug.log
+/client/dist
+
+# Ambiente Python/Django (Backend)
+**/venv/
+**/__pycache__/
+*.pyc
+db.sqlite3
+
+# Arquivos de Sistema Operacional e IDEs
+.DS_Store
+*.local
+.idea/
+.vscode/
