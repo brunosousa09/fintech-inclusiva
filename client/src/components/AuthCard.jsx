@@ -26,12 +26,11 @@ const GoogleIcon = () => (
 
 export default function AuthCard() {
     const [isFlipped, setIsFlipped] = useState(false);
-    const { login, register } = useContext(AuthContext); 
+    const { login, register } = useContext(AuthContext);
     const [loginUsername, setLoginUsername] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
     const [showLoginPassword, setShowLoginPassword] = useState(false);
-
-    const [registerName, setRegisterName] = useState('');
+    const [registerUsername, setRegisterUsername] = useState('');
     const [registerEmail, setRegisterEmail] = useState('');
     const [registerPassword, setRegisterPassword] = useState('');
     const [showRegisterPassword, setShowRegisterPassword] = useState(false);
@@ -54,12 +53,12 @@ export default function AuthCard() {
     const handleRegisterSubmit = async (e) => {
         e.preventDefault();
         try {
-            await register(registerName, registerEmail, registerPassword);
+            await register(registerUsername, registerEmail, registerPassword);
             alert('Cadastro realizado com sucesso! Vire o cartão para fazer login.');
             setIsFlipped(false);
         } catch (error) {
             console.error("Erro no cadastro:", error);
-            alert("Falha no cadastro. O e-mail já pode estar em uso.");
+            alert("Falha no cadastro. O nome de usuário ou e-mail já pode estar em uso.");
         }
     };
 
@@ -72,18 +71,11 @@ export default function AuthCard() {
             <div
                 className={`relative w-full h-full text-center transition-transform duration-700 ease-in-out [transform-style:preserve-3d] ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`}
             >
-                
+                {/* ===== (LOGIN) ===== */}
                 <div className={cardContainerClass}>
                     <h2 className="text-3xl font-bold text-white mb-6">Login</h2>
                     <form onSubmit={handleLoginSubmit} className="flex flex-col gap-5 flex-grow">
-                        <input
-                            value={loginUsername}
-                            onChange={e => setLoginUsername(e.target.value)}
-                            type="text"
-                            placeholder="Nome de Usuário"
-                            className={inputClass}
-                            required
-                        />
+                        <input value={loginUsername} onChange={e => setLoginUsername(e.target.value)} type="text" placeholder="Nome de Usuário" className={inputClass} required />
                         <div className="relative w-full">
                             <input value={loginPassword} onChange={e => setLoginPassword(e.target.value)} type={showLoginPassword ? 'text' : 'password'} placeholder="Senha" className={inputClass} required />
                             <button type="button" onClick={() => setShowLoginPassword(!showLoginPassword)} className="absolute top-1/2 right-2 -translate-y-1/2 text-slate-400 hover:text-white">
@@ -100,8 +92,8 @@ export default function AuthCard() {
                         <span className="text-slate-400 text-sm">OU</span>
                         <hr className="w-full border-slate-600"/>
                     </div>
-
-                    <a href="http://localhost:8000/api/auth/google" className="w-full p-3 flex items-center justify-center gap-3 bg-slate-700 rounded-lg text-white font-semibold hover:bg-slate-600 transition-colors">
+                    
+                    <a href="http://localhost:8000/accounts/google/login/" className="w-full p-3 flex items-center justify-center gap-3 bg-slate-700 rounded-lg text-white font-semibold hover:bg-slate-600 transition-colors">
                         <GoogleIcon />
                         Entrar com o Google
                     </a>
@@ -118,7 +110,7 @@ export default function AuthCard() {
                 <div className={`${cardContainerClass} [transform:rotateY(180deg)]`}>
                     <h2 className="text-3xl font-bold text-white mb-6">Cadastro</h2>
                     <form onSubmit={handleRegisterSubmit} className="flex flex-col gap-5 flex-grow">
-                        <input value={registerName} onChange={e => setRegisterName(e.target.value)} type="text" placeholder="Nome Completo" className={inputClass} required />
+                        <input value={registerUsername} onChange={e => setRegisterUsername(e.target.value)} type="text" placeholder="Nome de Usuário" className={inputClass} required />
                         <input value={registerEmail} onChange={e => setRegisterEmail(e.target.value)} type="email" placeholder="Email" className={inputClass} required />
                         <div className="relative w-full">
                             <input value={registerPassword} onChange={e => setRegisterPassword(e.target.value)} type={showRegisterPassword ? 'text' : 'password'} placeholder="Senha" className={inputClass} required />
@@ -133,7 +125,13 @@ export default function AuthCard() {
 
                     <div className="flex items-center gap-4 my-2">
                         <hr className="w-full border-slate-600"/>
+                        <span className="text-slate-400 text-sm">OU</span>
+                        <hr className="w-full border-slate-600"/>
                     </div>
+                    <a href="http://localhost:8000/accounts/google/login/" className="w-full p-3 flex items-center justify-center gap-3 bg-slate-700 rounded-lg text-white font-semibold hover:bg-slate-600 transition-colors">
+                        <GoogleIcon />
+                        Cadastrar com o Google
+                    </a>
                     
                     <p className="text-slate-400 text-sm mt-6">
                         Já tem uma conta?{' '}

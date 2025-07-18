@@ -5,7 +5,7 @@ const DashboardHeader = ({ user, logout }) => (
     <header className="bg-slate-800/50 p-4 flex justify-between items-center shadow-md sticky top-0 backdrop-blur-md">
         <div>
             <h1 className="text-xl font-bold text-white">FinanTech</h1>
-            <p className="text-sm text-slate-400">Bem-vindo, {user?.username}!</p>
+            <p className="text-sm text-slate-400">Bem-vindo, {user.username}!</p>
         </div>
         <button onClick={logout} className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-semibold">
             Sair
@@ -26,8 +26,6 @@ function DashboardPage() {
                 if (!token) {
                     throw new Error("Token não encontrado.");
                 }
-
-                // Faz a chamada GET para o endpoint de transações
                 const response = await api.get('/transactions/', {
                     headers: {
                         Authorization: `Bearer ${token}`
