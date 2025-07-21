@@ -46,7 +46,7 @@ export default function AuthCard() {
             await login(loginUsername, loginPassword);
         } catch (error) {
             console.error("Erro no login:", error);
-            alert("Falha no login. Verifique seu nome de usuário e senha.");
+            
         }
     };
 
@@ -54,11 +54,9 @@ export default function AuthCard() {
         e.preventDefault();
         try {
             await register(registerUsername, registerEmail, registerPassword);
-            alert('Cadastro realizado com sucesso! Vire o cartão para fazer login.');
-            setIsFlipped(false);
         } catch (error) {
             console.error("Erro no cadastro:", error);
-            alert("Falha no cadastro. O nome de usuário ou e-mail já pode estar em uso.");
+           
         }
     };
 

@@ -4,7 +4,7 @@ from rest_framework import status
 from django.shortcuts import redirect
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Transaction, User
-from .serializers import TransactionSerializer, UserRegisterSerializer
+from .serializers import TransactionSerializer, UserRegisterSerializer, UserSerializer
 
 class TransactionViewSet(viewsets.ModelViewSet):
     """
@@ -25,6 +25,12 @@ class UserRegisterView(generics.CreateAPIView):
     permissions_classes = [permissions.AllowAny] # Permite que qualquer um (não autenticado) acesse esta view
     serializer_class = UserRegisterSerializer
 
+class CurrentUserView(generics.RetrieveAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
 
 
 def google_login_callback(request):

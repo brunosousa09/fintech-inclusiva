@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Animação para o círculo de progresso ser DESENHADO */
+.progress-circle {
+  stroke-dasharray: 283; /* Circunferência do círculo */
+  stroke-dashoffset: 283;
+  animation: fill-circle 1.5s ease-in-out forwards;
+}
+
+/* Animação para os ícones de status serem DESENHADOS */
+.status-icon {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: draw-icon 0.5s 0.5s ease-out forwards;
+}
+
+@keyframes fill-circle {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes draw-icon {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
